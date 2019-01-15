@@ -4,7 +4,7 @@
 //=========================================================================
 
 var express = require("express");
-var path = require("path");
+
 
 //=========================================================================
 // EXPRESS CONFIGURATION
@@ -22,11 +22,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //===========================================================================
-// DATA
-// This points our server to our initial data.
-//===========================================================================
-var friends = require("./data/friends");
-console.log(friends);
 
 //===========================================================================
 // ROUTER
@@ -34,8 +29,8 @@ console.log(friends);
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs.
 //===========================================================================
 
-require("./routes/apiRoutes")(app, tables, waitingList);
-require("./routes/htmlRoutes")(app);
+require("./app/routing/apiRoutes")(app);
+require("./app/routing/htmlRoutes")(app);
 
 //===========================================================================
 //The below code effectively "starts" our server
