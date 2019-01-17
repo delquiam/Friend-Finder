@@ -15,11 +15,13 @@ var express = require("express");
 var app = express();
 
 // Sets an initial port. We'll use this later in our listener
-var PORT = process.env.PORT || 3030;
+var PORT = process.env.PORT || 3035;
 
 // Sets up the Express app to handle data paarsing
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static('public'));
 
 //===========================================================================
 

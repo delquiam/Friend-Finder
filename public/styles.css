@@ -1,0 +1,18 @@
+.jumbotron {
+    background-color: transparent;
+  }
+  
+  .container {
+      background: url("bag.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Boogaloo';
+
+    }
+   
+   .survey-container {
+    font-family: 'Boogaloo';
+    background: url("bag.jpg") no-repeat center center fixed;
+    background-size:  cover;
+   } 
+
+  

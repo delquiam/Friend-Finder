@@ -9,12 +9,15 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
- 
+  <link href="https://fonts.googleapis.com/css?family=Boogaloo" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
 
   <!-- Font Awesome Glyphicons -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  
+
+
 </head>
 
 <body>
@@ -152,21 +155,104 @@
     <br>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-secondary btn-lg btn-block" id="submit"><i class="fa fa-check-circle" aria-hidden="true"></i>
-     Submit</button>
+    <button type="submit" class="btn btn-secondary btn-lg btn-block" id="submit"><i class="fa fa-check-circle"
+        aria-hidden="true"></i>
+      Submit</button>
 
     <hr>
     <footer class="footer">
       <div class="footer-container">
-        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/delquiam/Friend-Finder">GitHub Repo</a></p>
+        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/delquiam/Friend-Finder">GitHub
+            Repo</a></p>
       </div>
     </footer>
 
   </div>
 
-  
+  <!-- Modal -->
+  <div class="modal fade" id="resultsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="caption">Your Shopping Partner is...</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3 id='match-name'></h3>
+          <img src="" id='match-img' height=75% width=75%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  
+
+
+  <script>
+
+    // Capture the form inputs
+    $("#submit").on("click", function (event) {
+      event.preventDefault();
+
+      // Form validation
+      function validateForm() {
+        var isValid = true;
+        $(".form-control").each(function () {
+          if ($(this).val() === "") {
+            isValid = false;
+          }
+        });
+
+        $(".chosen-select").each(function () {
+
+          if ($(this).val() === "") {
+            isValid = false;
+          }
+        });
+        return isValid;
+      }
+
+      // If all required fields are filled
+      if (validateForm()) {
+        // Create object for user data
+        var newFriend = {
+          'name': $("#name").val().trim(),
+          'photo': $("#photo").val().trim(),
+          "scores": [
+            $("#q1").val(),
+            $("#q2").val(),
+            $("#q3").val(),
+            $("#q4").val(),
+            $("#q5").val(),
+            $("#q6").val(),
+            $("#q7").val(),
+            $("#q8").val(),
+            $("#q9").val(),
+            $("#q10").val()
+          ]
+        };
+
+
+        // AJAX post the data to the friends api
+        $.post("/api/friends", newFriend, function (data) {
+          // console.log(data);
+          // grab the result from the ajax post so that the best match's name and photo are displayed
+          $('#match-name').text(data.name);
+          $('#match-img').attr("src", data.photo);
+
+          // show modal with most compatible friend
+          $('#resultsModal').modal("toggle");
+        });
+      } else {
+        alert("Please fill out all fields before submitting!");
+      }
+    });
+  </script>
+
 </body>
 
 </html>
